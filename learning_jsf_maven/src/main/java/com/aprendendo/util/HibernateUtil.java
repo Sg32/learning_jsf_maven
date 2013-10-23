@@ -6,27 +6,33 @@ import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
 
 public class HibernateUtil {
-
+    
     private static final SessionFactory sessionFactory;
     public static final String HIBERNATE_SESSION = "hibernate_session";
     
-    static {
+    static{
+        
         try {
-            System.out.println("Tentando abrir uma Session Factory");
-            Configuration configurar = new Configuration().configure();
-            ServiceRegistry serviceRegistry = new ServiceRegistryBuilder()
-                    .applySettings(configurar.getProperties()).buildServiceRegistry();
             
-            sessionFactory = configurar.buildSessionFactory(serviceRegistry);
+            System.out.println("Tentando configurar a SF");
             
-            System.out.println("Session Factory criada com sucesso...");
+            Configuration configuration = new Configuration().configure();
+            
+            ServiceRegistry serviceRegistry = new ServiceRegistryBuilder().
+                applySettings(configuration.getProperties()).buildServiceRegistry();
+            
+            sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+            
+            System.out.println("Session factory criada corretamente");
         } catch (Exception ex) {
-            System.out.println("Ocorreu um erro ao iniciar a Session Factory. "+ ex);
+            System.out.println("Ocorreu um  erro ao iniciar a SF. " + ex);
             throw new ExceptionInInitializerError(ex);
         }
+        
+        
     }
 
-    public static SessionFactory getSessionfactory() {
+    public static SessionFactory getSessionFactory() {
         return sessionFactory;
-    }
+    }    
 }
